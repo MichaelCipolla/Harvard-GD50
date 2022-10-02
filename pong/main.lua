@@ -148,7 +148,7 @@ function love.update(dt)
         -- detect ball collision with paddles, reversing dx if true and
         -- slightly increasing it, then altering the dy based on the position
         -- at which it collided, then playing a sound effect
-        if ball:collides(player1) then
+        if ball:collides(player1, dt) then
             ball.dx = -ball.dx * 1.03
             ball.x = player1.x + 5
 
@@ -161,7 +161,7 @@ function love.update(dt)
 
             sounds['paddle_hit']:play()
         end
-        if ball:collides(player2) then
+        if ball:collides(player2, dt) then
             ball.dx = -ball.dx * 1.03
             ball.x = player2.x - 4
 
@@ -365,5 +365,5 @@ function displayFPS()
     -- simple FPS display across all states
     love.graphics.setFont(smallFont)
     love.graphics.setColor(0, 1, 0, 1)
-    love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
+    love.graphics.print('ballspeed: ' .. tostring(ball.dx), 10, 10)
 end
