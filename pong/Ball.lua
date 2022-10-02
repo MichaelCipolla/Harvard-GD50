@@ -30,7 +30,29 @@ end
     Expects a paddle as an argument and returns true or false, depending
     on whether their rectangles overlap.
 ]]
-function Ball:collides(paddle)
+function Ball:collides(paddle, dt)
+    -- If we use the 'predictive' collision code with ball speeds that are too low we can 'save' the ball by moving the paddle
+    -- over the ball in near miss scenarios. This code should prevent that from happening.
+    if math.abs(self.dx) > 700 then
+        if paddle.x == 10 then
+            -- Since there is a bug causing the game to miss collisions at high speeds.
+            -- we want to check if a collision will occur in the next frame.
+            if self.x + self.dx * dt < paddle.x then
+                if self.y + self.height > paddle.y and self.y < paddle.y + paddle.height then
+                    return true
+                end
+            end
+        else
+            if self.x + self.dx * dt > paddle.x then
+                if self.y + self.height > paddle.y and self.y < paddle.y + paddle.height then
+                    return true
+                end
+            end
+        end
+    end
+
+    
+
     -- first, check to see if the left edge of either is farther to the right
     -- than the right edge of the other
     if self.x > paddle.x + paddle.width or paddle.x > self.x + self.width then

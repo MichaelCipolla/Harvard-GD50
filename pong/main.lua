@@ -148,7 +148,7 @@ function love.update(dt)
         -- detect ball collision with paddles, reversing dx if true and
         -- slightly increasing it, then altering the dy based on the position
         -- at which it collided, then playing a sound effect
-        if ball:collides(player1) then
+        if ball:collides(player1, dt) then
             ball.dx = -ball.dx * 1.03
             ball.x = player1.x + 5
 
@@ -161,7 +161,7 @@ function love.update(dt)
 
             sounds['paddle_hit']:play()
         end
-        if ball:collides(player2) then
+        if ball:collides(player2, dt) then
             ball.dx = -ball.dx * 1.03
             ball.x = player2.x - 4
 
@@ -242,9 +242,9 @@ function love.update(dt)
     end
 
     -- player 2
-    if love.keyboard.isDown('up') then
+    if ball.y < player2.y + 5 then
         player2.dy = -PADDLE_SPEED
-    elseif love.keyboard.isDown('down') then
+    elseif ball.y > player2.y  + 15 then
         player2.dy = PADDLE_SPEED
     else
         player2.dy = 0
